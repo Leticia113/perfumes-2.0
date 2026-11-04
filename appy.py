@@ -1,92 +1,111 @@
 import streamlit as st
 import pandas as pd
 
-# Configuração da página com tema de luxo
+# Configuração da página - Tema bem garota
 st.set_page_config(
-    page_title="Perfume Premium Finder",
-    page_icon="✨",
+    page_title="Garota Perfumada 2026",
+    page_icon="🌸",
     layout="wide"
 )
 
-# Estilização global - Identidade visual baseada em Ouro, Champagne e Brilho Estúdio
+# Estilização global - Estética Pink, Pastel, Dreamy e Coquete
 st.markdown("""
     <style>
-    /* Fundo da aplicação num tom escuro arroxeado/luxuoso */
+    /* Importando fontes delicadas e divertidas do Google Fonts */
+    @import url('https://googleapis.com');
+    
+    /* Fundo degradê rosa pastel mágico e romântico */
     .stApp {
-        background: radial-gradient(circle at 50% 50%, #1e152a 0%, #0b0711 100%);
+        background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #fbc4ab 100%);
     }
     
-    /* Títulos e Subtítulos em tons de Ouro e Champagne */
+    /* Títulos e textos com fontes fofas e arredondadas */
     h1 {
-        color: #f3e5ab; 
-        font-family: 'Playfair Display', 'Georgia', serif; 
+        color: #ff4d6d; 
+        font-family: 'Fredoka', sans-serif; 
         font-weight: 700;
-        text-shadow: 0px 0px 12px rgba(243, 229, 171, 0.4);
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6);
         text-align: center;
+        font-size: 3rem !important;
     }
-    h3, p, span {
-        font-family: 'Montserrat', sans-serif;
+    h2, h3, h4, p, span, label {
+        font-family: 'Quicksand', sans-serif !important;
+        font-weight: 600 !important;
+        color: #4a3b42 !important;
     }
     
-    /* Cards dos Perfumes - Efeito Glassmorphism Dourado/Champagne */
+    /* Cards dos Perfumes - Estilo Vidro Rosa Translúcido (Soft Coquette) */
     .perfume-card {
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        border-radius: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        border-radius: 20px;
         padding: 24px;
-        margin-bottom: 10px;
-        background: rgba(30, 21, 42, 0.6);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 24px rgba(255, 182, 193, 0.4);
         transition: all 0.3s ease-in-out;
     }
     .perfume-card:hover {
-        transform: translateY(-6px);
-        border-color: rgba(212, 175, 55, 0.8);
-        box-shadow: 0 12px 40px 0 rgba(212, 175, 55, 0.2);
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.65);
+        border-color: #ff758f;
+        box-shadow: 0 12px 30px rgba(255, 117, 143, 0.5);
     }
     
-    /* Tags de Família Olfativa em Rosa Champagne */
+    /* Tags de Família Olfativa em formato de pílula rosa chiclete */
     .tag {
-        background: linear-gradient(135deg, #ffb7b2 0%, #e8a598 100%);
-        color: #1e152a;
-        padding: 4px 12px;
-        border-radius: 30px;
+        background: #ff758f;
+        color: white !important;
+        padding: 6px 14px;
+        border-radius: 25px;
         font-size: 11px;
-        font-weight: bold;
+        font-weight: bold !important;
         letter-spacing: 0.5px;
+        display: inline-block;
+        box-shadow: 0 2px 8px rgba(255, 117, 143, 0.3);
     }
     
-    /* Customizando os botões padrão do Streamlit para combinar com o tema */
+    /* Customizando os botões para ficarem super fofos e arredondados */
     div.stButton > button {
-        background: linear-gradient(135deg, #e8a598 0%, #d4af37 100%) !important;
-        color: #1e152a !important;
-        font-weight: bold !important;
+        background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%) !important;
+        color: white !important;
+        font-family: 'Fredoka', sans-serif !important;
+        font-size: 14px !important;
         border: none !important;
-        border-radius: 8px !important;
+        border-radius: 50px !important;
+        padding: 10px 24px !important;
+        box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3) !important;
         transition: all 0.2s ease;
     }
     div.stButton > button:hover {
-        transform: scale(1.03);
-        box-shadow: 0px 0px 15px rgba(232, 165, 152, 0.6) !important;
+        transform: scale(1.05);
+        box-shadow: 0px 6px 20px rgba(255, 77, 109, 0.5) !important;
+        background: linear-gradient(135deg, #ff8da1 0%, #ff5c7a 100%) !important;
+    }
+    
+    /* Estilização da sidebar (Menu de Filtros) */
+    [data-testid="stSidebar"] {
+        background-color: rgba(255, 240, 245, 0.85) !important;
+        border-right: 2px solid rgba(255, 182, 193, 0.4);
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Dados dos perfumes com links de imagens placeholder (substitua pelas suas imagens reais se quiser)
+# Dados com as imagens reais que você enviou + imagens extras da web que combinam com o tema
 @st.cache_data
 def carregar_dados():
     perfumes = [
         {
             "Nome": "Bleu de Chanel", "Marca": "Chanel", "Familia": "Amadeirado", "Ocasiao": "Noite / Formal", "Preco": 890, "Nota": "Citros, Incenso, Cedro",
-            "Imagem": "https://unsplash.com"
+            "Imagem": "https://t3.ftcdn.net/jpg/17/58/20/86/360_F_1758208698_rdakp4JJcCQKu0V03bCrLPbUxfPnvlYi.jpg"
         },
         {
             "Nome": "Sauvage", "Marca": "Dior", "Familia": "Fougère / Aromático", "Ocasiao": "Versátil", "Preco": 750, "Nota": "Bergamota, Pimenta, Ambroxan",
-            "Imagem": "https://unsplash.com"
+            "Imagem": "https://png.pngtree.com/thumb_back/fh260/background/20241126/pngtree-two-perfume-bottles-with-pastel-colored-liquids-set-against-a-dreamy-image_16643309.jpg"
         },
         {
             "Nome": "La Vie Est Belle", "Marca": "Lancôme", "Familia": "Floral / Doces", "Ocasiao": "Casual / Noite", "Preco": 680, "Nota": "Íris, Jasmim, Baunilha",
-            "Imagem": "https://unsplash.com"
+            "Imagem": "https://dreamstime.com"
         },
         {
             "Nome": "Acqua di Giò", "Marca": "Giorgio Armani", "Familia": "Cítrico / Aquático", "Ocasiao": "Dia / Verão", "Preco": 620, "Nota": "Notas Marinhas, Limão, Alecrim",
@@ -105,19 +124,19 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# Cabeçalho principal estilizado
-st.markdown("<h1>✨ PERFUME STUDIO PREMIUM</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #dfd5c6; font-size: 16px;'>Descubra o aroma que traduz o seu luxo e personalidade</p>", unsafe_allow_html=True)
+# Cabeçalho principal
+st.markdown("<h1>🌸 CLUBE DAS GAROTAS PERFUMADAS 🌸</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #6c5862; font-size: 16px; font-weight: bold;'>Encontre o cheirinho perfeito que combina com o seu mood de hoje! ✨</p>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Barra lateral para filtros
-st.sidebar.header("👑 Seletor de Luxo")
+st.sidebar.markdown("<h2 style='color: #ff4d6d; text-align: center;'>💖 Filtros Fofos</h2>", unsafe_allow_html=True)
 
 familias = ["Todas"] + list(df["Familia"].unique())
-familia_selecionada = st.sidebar.selectbox("Família Olfativa", familias)
+familia_selecionada = st.sidebar.selectbox("Escolha a vibe olfativa:", familias)
 
 ocasioes = ["Todas"] + ["Dia / Verão", "Versátil", "Noite / Formal", "Noite / Balada", "Casual / Noite"]
-ocasiao_selecionada = st.sidebar.selectbox("Ocasião de Uso", ocasioes)
+ocasiao_selecionada = st.sidebar.selectbox("Onde você vai usar?", ocasioes)
 
 preco_max = st.sidebar.slider("Preço Máximo (R$)", min_value=500, max_value=1000, value=1000, step=50)
 
@@ -130,42 +149,44 @@ if familia_selecionada != "Todas":
 if ocasiao_selecionada != "Todas":
     df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao_selecionada, na=False)]
 
-# Grid principal
-st.markdown(f"<h3 style='color: #f3e5ab;'>🛍️ Coleção Selecionada ({len(df_filtrado)})</h3>", unsafe_allow_html=True)
+# Grid principal de cards
+st.markdown(f"<h3>🎀 Seus Combinados Perfeitos ({len(df_filtrado)})</h3>", unsafe_allow_html=True)
 
 if df_filtrado.empty:
-    st.warning("Nenhum perfume encontrado com os filtros selecionados. Tente ajustar suas preferências!")
+    st.warning("Poxa, nenhum cheirinho achado com esses filtros. Tente mudar as opções na barra lateral! 💕")
 else:
     cols = st.columns(3)
     
     for index, row in df_filtrado.reset_index().iterrows():
         with cols[index % 3]:
-            # Container com design elegante de estúdio de fotografia
+            # Imagem do perfume exibida no topo do card com bordas arredondadas e fofas
+            st.image(row['Imagem'], use_container_width=True)
+            
+            # Container do card com informações detalhadas abaixo da foto
             st.markdown(
                 f"""
                 <div class="perfume-card">
-                    <h3 style="margin-top:0; color:#f3e5ab; font-family:'Playfair Display', serif;">{row['Nome']}</h3>
-                    <p style="color:#d0c4b4; margin-bottom:15px; font-size: 13px;"><strong>MARCA:</strong> {row['Marca'].upper()}</p>
-                    <p style="margin-bottom:15px;"><span class="tag">{row['Familia'].upper()}</span></p>
-                    <p style="color:#e2e8f0; font-size:14px;"><strong>Ocasião:</strong> {row['Ocasiao']}</p>
-                    <p style="color:#cbd5e0; font-size:14px; min-height:45px;"><strong>Notas de topo:</strong> <em>{row['Nota']}</em></p>
-                    <h2 style="color:#d4af37; margin-top:15px; margin-bottom:0px; font-family: 'Playfair Display', serif;">R$ {row['Preco']},00</h2>
+                    <h3 style="margin-top:0; color:#ff4d6d; font-family:'Fredoka', sans-serif; font-size:20px;">{row['Nome']}</h3>
+                    <p style="color:#8a737f; margin-bottom:12px; font-size: 13px;"><strong>MARCA:</strong> {row['Marca']}</p>
+                    <p style="margin-bottom:12px;"><span class="tag">✨ {row['Familia']}</span></p>
+                    <p style="font-size:14px; margin-bottom:6px;"><strong>Ideal para:</strong> {row['Ocasiao']}</p>
+                    <p style="font-size:14px; color:#5c4d55;"><strong>Notas:</strong> <em>{row['Nota']}</em></p>
+                    <h3 style="color:#ff4d6d; margin-top:12px; margin-bottom:0px; font-family: 'Fredoka', sans-serif;">R$ {row['Preco']},00</h3>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
             
-            # Imagem do perfume perfeitamente integrada
-            st.image(row['Imagem'], use_container_width=True)
-            
-            if st.button(f"Explorar Fragrância", key=f"btn_{row['Nome']}"):
-                st.info(f"Notas exclusivas de {row['Nome']}. Ideal para destacar sua presença em momentos como {row['Ocasiao']}.")
-            st.markdown("<br><br>", unsafe_allow_html=True)
+            # Botão de interação fofo
+            if st.button(f"Quero esse! 💕", key=f"btn_{row['Nome']}", use_container_width=True):
+                st.balloons()
+                st.success(f"Arrasou! O {row['Nome']} é perfeito para exalar a sua energia icônica em momentos de {row['Ocasiao']}!")
+            st.markdown("<br>", unsafe_allow_html=True)
 
-st.markdown("<hr style='border-color: rgba(212, 175, 55, 0.2);'>", unsafe_allow_html=True)
-st.markdown("<h3 style='color: #f3e5ab; text-align: center;'>✨ Deseja uma consultoria sob medida?</h3>", unsafe_allow_html=True)
-c_button = st.columns([1,2,1])
-with c_button[1]:
-    if st.button("Iniciar Quiz da Assinatura Olfativa", use_container_width=True):
-        st.balloons()
-        st.success("Perfeito! Em breve liberaremos o questionário personalizado de alta perfumaria.")
+st.markdown("<hr style='border-color: rgba(255, 117, 143, 0.3);'>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #ff4d6d;'>✨ Ainda na dúvida, amiga?</h3>", unsafe_allow_html=True)
+
+if st.button("✨ Descobrir minha Assinatura Olfativa Secreta 💖", use_container_width=True):
+    st.balloons()
+    st.snow()
+    st.success("Yay! Nosso teste de personalidade de garota está quase pronto para você descobrir seu aroma secreto!")
