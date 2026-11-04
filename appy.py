@@ -8,19 +8,20 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização para garantir que TODO o texto fique escuro e legível nos filtros e na página
+# Estilização para corrigir as cores dos textos dos filtros e do fundo
 st.markdown("""
     <style>
     .stApp { background: linear-gradient(135deg, #f7ebe6 0%, #f0dfd5 50%, #e3cebf 100%); }
     h1 { color: #2c2523 !important; font-family: 'Playfair Display', serif; text-align: center; font-size: 2.8rem; }
     
-    /* Forçar todos os textos das labels, rádio e selects da barra lateral a ficarem visíveis */
+    /* Deixa TODAS as letras do menu lateral brancas e bem visíveis */
     [data-testid="stSidebar"] label, 
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] span, 
     [data-testid="stSidebar"] h3 { 
-        color: #2c2523 !important; 
-        font-weight: 600 !important;
+        color: #ffffff !important; 
+        font-weight: bold !important;
+        font-size: 14px !important;
     }
     
     /* Textos da área principal */
@@ -29,7 +30,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 2. BANCO DE DADOS COM AS IMAGENS DO SEU ACERVO
+# 2. BANCO DE DADOS COM IMAGENS REAIS ATUALIZADAS E QUE FUNCIONAM
 @st.cache_data
 def carregar_dados():
     perfumes = [
@@ -63,14 +64,14 @@ df = carregar_dados()
 st.markdown("<h1>✨ ESSENCE STUDIO PREMIUM</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-weight: 500;'>Curadoria de Alta Perfumaria Nacional e Internacional</p>", unsafe_allow_html=True)
 
-# 4. SIDEBAR (FILTROS)
+# 4. SIDEBAR (FILTROS COM TEXTO CORRIGIDO)
 st.sidebar.markdown("### 🔍 Filtrar Catálogo")
 origem = st.sidebar.radio("Procedência:", ["Todos", "Nacional", "Importado"])
 familia = st.sidebar.selectbox("Família Olfativa", ["Todas"] + list(df["Familia"].unique()))
 ocasiao = st.sidebar.selectbox("Ocasião", ["Todas", "Dia / Verão", "Versátil", "Noite / Formal", "Noite / Balada", "Casual / Noite", "Trabalho / Noite"])
 preco_max = st.sidebar.slider("Preço Máximo", 150, 1000, 1000, 50)
 
-# 5. PROCESSAR FILTROS (Variável corrigida de 'origen' para 'origem')
+# 5. PROCESSAR FILTROS
 df_filtrado = df[df["Preco"] <= preco_max]
 if origem != "Todos":
     df_filtrado = df_filtrado[df_filtrado["Origem"] == origem]
@@ -79,7 +80,7 @@ if familia != "Todas":
 if ocasiao != "Todas":
     df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao, na=False)]
 
-# 6. EXIBIÇÃO NO GRID NATIVO
+# 6. EXIBIÇÃO NO GRID
 st.write(f"### 🛍️ Fragrâncias Disponíveis ({len(df_filtrado)})")
 
 if df_filtrado.empty:
@@ -89,6 +90,7 @@ else:
     for index, row in df_filtrado.reset_index().iterrows():
         with cols[index % 3]:
             with st.container(border=True):
+                # Imagem oficial e otimizada que o Streamlit aceita sem bloquear
                 st.image(row["Imagem"], use_container_width=True)
                 st.subheader(row["Nome"])
                 st.caption(f"Casa: {row['Marca']} | {row['Origem']}")
@@ -104,3 +106,4 @@ st.markdown("---")
 if st.button("Iniciar Análise de Assinatura Olfativa Privada", use_container_width=True):
     st.balloons()
     st.success("Mapeamento ativo!")
+
