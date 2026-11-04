@@ -1,114 +1,26 @@
 import streamlit as st
 import pandas as pd
 
-# 1. CONFIGURAÇÃO PREMIUM DE PÁGINA
+# 1. CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title="Essence Studio Premium",
     page_icon="✨",
     layout="wide"
 )
 
-# 2. ESTILIZAÇÃO GLOBAL AVANÇADA (CSS CUSTOMIZADO)
+# Estilização básica para o fundo e títulos
 st.markdown("""
     <style>
-    /* Fundo Degradê sutil Champagne Rose Acetinado */
-    .stApp {
-        background: linear-gradient(135deg, #f7ebe6 0%, #f0dfd5 50%, #e3cebf 100%);
-    }
-    
-    /* Tipografia de Alta Perfumaria */
-    h1 {
-        color: #2c2523; 
-        font-family: 'Playfair Display', serif !important; 
-        font-weight: 700;
-        text-align: center;
-        font-size: 2.8rem !important;
-        letter-spacing: 1px;
-        margin-bottom: 5px !important;
-    }
-    h2, h3, h4, p, span, label {
-        font-family: 'Montserrat', sans-serif !important;
-    }
-    
-    /* Cards Premium Unissex */
-    .perfume-card {
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.45);
-        backdrop-filter: blur(12px);
-        box-shadow: 0 10px 30px rgba(58, 49, 46, 0.06);
-        transition: all 0.3s ease;
-    }
-    .perfume-card:hover {
-        transform: translateY(-6px);
-        background: rgba(255, 255, 255, 0.75);
-        border-color: #ba9d8e;
-        box-shadow: 0 15px 35px rgba(58, 49, 46, 0.12);
-    }
-    
-    /* Container interno para as fotos */
-    .card-img-container {
-        width: 100%;
-        height: 240px;
-        border-radius: 8px;
-        overflow: hidden;
-        margin-bottom: 18px;
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .card-img-container img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        padding: 5px;
-    }
-    
-    /* Tags de Procedência */
-    .tag {
-        color: #f7ebe6 !important;
-        padding: 4px 12px;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: 600 !important;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        display: inline-block;
-        margin-right: 5px;
-    }
-    .tag-importado { background: #2c2523; }
-    .tag-nacional { background: #8c7365; }
-    
-    /* Customização dos Botões */
-    div.stButton > button {
-        background: #2c2523 !important;
-        color: #f7ebe6 !important;
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 13px !important;
-        font-weight: 600 !important;
-        border: none !important;
-        border-radius: 4px !important;
-        padding: 12px 24px !important;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        box-shadow: 0 4px 12px rgba(44, 37, 35, 0.15) !important;
-        transition: all 0.2s ease;
-    }
-    div.stButton > button:hover {
-        background: #4a3f3b !important;
-        transform: scale(1.02);
-    }
+    .stApp { background: linear-gradient(135deg, #f7ebe6 0%, #f0dfd5 50%, #e3cebf 100%); }
+    h1 { color: #2c2523; font-family: 'Playfair Display', serif; text-align: center; font-size: 2.8rem; }
     </style>
 """, unsafe_allow_html=True)
 
-# 3. BANCO DE DADOS COMPLETO COM SUA CURADORIA DE PRODUTOS
+# 2. BANCO DE DADOS COMPLETO (COM OS SEUS LINKS REAIS)
 @st.cache_data
 def carregar_dados():
     perfumes = [
-        # --- IMPORTADOS ---
+        # IMPORTADOS
         {"Nome": "La Vie Est Belle", "Marca": "Lancôme", "Familia": "Floral / Doces", "Ocasiao": "Casual / Noite", "Preco": 680, "Nota": "Íris, Jasmim, Baunilha", "Origem": "Importado", "Imagem": "https://gstatic.com"},
         {"Nome": "Bleu de Chanel", "Marca": "Chanel", "Familia": "Amadeirado", "Ocasiao": "Noite / Formal", "Preco": 890, "Nota": "Citros, Incenso, Cedro", "Origem": "Importado", "Imagem": "https://gstatic.com"},
         {"Nome": "Sauvage", "Marca": "Dior", "Familia": "Fougère / Aromático", "Ocasiao": "Versátil", "Preco": 750, "Nota": "Bergamota, Pimenta, Ambroxan", "Origem": "Importado", "Imagem": "https://gstatic.com"},
@@ -119,7 +31,7 @@ def carregar_dados():
         {"Nome": "Le Male", "Marca": "Jean Paul Gaultier", "Familia": "Oriental Fougère", "Ocasiao": "Casual / Noite", "Preco": 690, "Nota": "Menta, Lavanda, Baunilha", "Origem": "Importado", "Imagem": "https://jeanpaulgaultier.com"},
         {"Nome": "Acqua di Giò", "Marca": "Giorgio Armani", "Familia": "Cítrico / Aquático", "Ocasiao": "Dia / Verão", "Preco": 620, "Nota": "Notas Marinhas, Limão, Alecrim", "Origem": "Importado", "Imagem": "https://gstatic.com"},
         {"Nome": "Light Blue", "Marca": "Dolce & Gabbana", "Familia": "Cítrico / Floral", "Ocasiao": "Dia / Verão", "Preco": 550, "Nota": "Maçã Verde, Bambu, Limão Siciliano", "Origem": "Importado", "Imagem": "https://gstatic.com"},
-        # --- NACIONAIS ---
+        # NACIONAIS
         {"Nome": "Natura Essencial Feminino", "Marca": "Natura", "Familia": "Floral Clássico", "Ocasiao": "Casual / Elegante", "Preco": 175, "Nota": "Jasmim, Violeta, Complexo Cítrico", "Origem": "Nacional", "Imagem": "https://gstatic.com"},
         {"Nome": "Natura Essencial Masculino", "Marca": "Natura", "Familia": "Amadeirado Elegante", "Ocasiao": "Trabalho / Formal", "Preco": 175, "Nota": "Cedro, Âmbar, Notas Especiadas", "Origem": "Nacional", "Imagem": "https://gstatic.com"},
         {"Nome": "Malbec", "Marca": "O Boticário", "Familia": "Amadeirado Vínico", "Ocasiao": "Trabalho / Noite", "Preco": 219, "Nota": "Carvalho, Álcool Vínico, Patchouli", "Origem": "Nacional", "Imagem": "https://gstatic.com"},
@@ -133,59 +45,49 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# 4. ELEMENTOS DO CABEÇALHO PRINCIPAL
+# 3. CABEÇALHO
 st.markdown("<h1>✨ ESSENCE STUDIO PREMIUM</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #5e514c; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top:0;'>Curadoria Unissex de Alta Perfumaria Nacional e Internacional</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #5e514c;'>Curadoria de Alta Perfumaria Nacional e Internacional</p>", unsafe_allow_html=True)
 
-# 5. FILTROS NA BARRA LATERAL (SIDEBAR)
-st.sidebar.markdown("<h3 style='color: #2c2523; font-weight: 700; margin-top: 20px;'>🔍 Filtrar Catálogo</h3>", unsafe_allow_html=True)
-origem_selecionada = st.sidebar.radio("Procedência:", ["Todos", "Nacional", "Importado"])
+# 4. SIDEBAR (FILTROS)
+st.sidebar.header("🔍 Filtrar Catálogo")
+origem = st.sidebar.radio("Procedência:", ["Todos", "Nacional", "Importado"])
+familia = st.sidebar.selectbox("Família Olfativa", ["Todas"] + list(df["Familia"].unique()))
+ocasiao = st.sidebar.selectbox("Ocasião", ["Todas", "Dia / Verão", "Versátil", "Noite / Formal", "Noite / Balada", "Casual / Noite", "Trabalho / Noite"])
+preco_max = st.sidebar.slider("Preço Máximo", 150, 1000, 1000, 50)
 
-familias = ["Todas"] + list(df["Familia"].unique())
-familia_selecionada = st.sidebar.selectbox("Família Olfativa", familias)
-
-ocasiao_selecionada = st.sidebar.selectbox("Ocasião de Uso", ["Todas", "Dia / Verão", "Versátil", "Noite / Formal", "Noite / Balada", "Casual / Noite", "Trabalho / Noite", "Trabalho / Formal", "Noite / Festas"])
-preco_max = st.sidebar.slider("Preço Máximo (R$)", min_value=150, max_value=1000, value=1000, step=50)
-
+# 5. PROCESSAR FILTROS
 df_filtrado = df[df["Preco"] <= preco_max]
-if origem_selecionada != "Todos":
-df_filtrado = df_filtrado[df_filtrado["Origem"] == origem_selecionada]
-if familia_selecionada != "Todas":
-df_filtrado = df_filtrado[df_filtrado["Familia"] == familia_selecionada]
-if ocasiao_selecionada != "Todas":
-df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao_selecionada, na=False)]
-st.write(f"### ✨ Fragrâncias Disponíveis ({len(df_filtrado)})")
+if origem != "Todos":
+    df_filtrado = df_filtrado[df_filtrado["Origem"] == origem]
+if familia != "Todas":
+    df_filtrado = df_filtrado[df_filtrado["Familia"] == familia]
+if ocasiao != "Todas":
+    df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao, na=False)]
+
+# 6. EXIBIÇÃO NO GRID NATIVO DO STREAMLIT
+st.write(f"### 🛍️ Fragrâncias Disponíveis ({len(df_filtrado)})")
+
 if df_filtrado.empty:
-st.warning("Nenhuma fragrância corresponde aos critérios selecionados.")
+    st.warning("Nenhum perfume encontrado com esses filtros.")
 else:
-cols = st.columns(3)
-for index, row in df_filtrado.reset_index().iterrows():
-with cols[index % 3]:
-# Define a cor da tag dependendo da nacionalidade do perfume
-tag_class = "tag tag-nacional" if row['Origem'] == "Nacional" else "tag tag-importado"
-# Montagem estruturada do Card em HTML
-st.markdown(f"""
+    cols = st.columns(3)
+    for index, row in df_filtrado.reset_index().iterrows():
+        with cols[index % 3]:
+            # Criando um card limpo nativo do Streamlit para evitar erros de texto
+            with st.container(border=True):
+                st.image(row["Imagem"], use_container_width=True)
+                st.subheader(row["Nome"])
+                st.caption(f"Casa: {row['Marca']} | {row['Origem']}")
+                st.write(f"**Família:** {row['Familia']}")
+                st.write(f"**Uso:** {row['Ocasiao']}")
+                st.write(f"**Notas:** *{row['Nota']}*")
+                st.metric(label="Preço", value=f"R$ {row['Preco']},00")
+                
+                if st.button("Detalhes", key=f"btn_{row['Nome']}", use_container_width=True):
+                    st.info(f"{row['Nome']} destaca-se por sua excelente evolução focada em {row['Nota']}.")
 
-
-
-
-{row['Nome']}
-CASA: {row['Marca'].upper()}
-
-{row['Origem']}
-{row['Familia']}
-
-Uso: {row['Ocasiao']}
-Acorde: {row['Nota']}
-R$ {row['Preco']},00
-
-""", unsafe_allow_html=True)
-# Botão interativo do Streamlit logo abaixo do card HTML
-if st.button("Detalhes da Fragrância", key=f"btn_{row['Nome']}", use_container_width=True):
-st.info(f"{row['Nome']} de {row['Marca']} destaca-se por sua excelente evolução olfativa focada em {row['Nota']}.")
-st.markdown("
-", unsafe_allow_html=True)
-st.markdown("", unsafe_allow_html=True)
+st.markdown("---")
 if st.button("Iniciar Análise de Assinatura Olfativa Privada", use_container_width=True):
-st.balloons()
-st.success("Mapeamento ativo! Descubra os seus acordes ideais em breve.")
+    st.balloons()
+    st.success("Mapeamento ativo!")
