@@ -1,44 +1,78 @@
 import streamlit as st
 import pandas as pd
 
-# Configuração da página
+# Configuração da página com tema de luxo
 st.set_page_config(
-    page_title="Perfume Finder 2026",
+    page_title="Perfume Premium Finder",
     page_icon="✨",
     layout="wide"
 )
 
-# Estilização global para melhorar o visual
+# Estilização global - Identidade visual baseada em Ouro, Champagne e Brilho Estúdio
 st.markdown("""
     <style>
-    .main { background-color: #0e1117; }
-    h1 { color: #f8f9fa; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; }
-    h3 { color: #ced4da; }
+    /* Fundo da aplicação num tom escuro arroxeado/luxuoso */
+    .stApp {
+        background: radial-gradient(circle at 50% 50%, #1e152a 0%, #0b0711 100%);
+    }
+    
+    /* Títulos e Subtítulos em tons de Ouro e Champagne */
+    h1 {
+        color: #f3e5ab; 
+        font-family: 'Playfair Display', 'Georgia', serif; 
+        font-weight: 700;
+        text-shadow: 0px 0px 12px rgba(243, 229, 171, 0.4);
+        text-align: center;
+    }
+    h3, p, span {
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    /* Cards dos Perfumes - Efeito Glassmorphism Dourado/Champagne */
     .perfume-card {
-        border: 1px solid #2d3748;
-        border-radius: 12px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 16px;
         padding: 24px;
-        margin-bottom: 20px;
-        background-color: #1a202c;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
+        margin-bottom: 10px;
+        background: rgba(30, 21, 42, 0.6);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        transition: all 0.3s ease-in-out;
     }
     .perfume-card:hover {
-        transform: translateY(-4px);
-        border-color: #4a5568;
+        transform: translateY(-6px);
+        border-color: rgba(212, 175, 55, 0.8);
+        box-shadow: 0 12px 40px 0 rgba(212, 175, 55, 0.2);
     }
+    
+    /* Tags de Família Olfativa em Rosa Champagne */
     .tag {
-        background-color: #2b6cb0;
-        color: white;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
+        background: linear-gradient(135deg, #ffb7b2 0%, #e8a598 100%);
+        color: #1e152a;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 11px;
         font-weight: bold;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Customizando os botões padrão do Streamlit para combinar com o tema */
+    div.stButton > button {
+        background: linear-gradient(135deg, #e8a598 0%, #d4af37 100%) !important;
+        color: #1e152a !important;
+        font-weight: bold !important;
+        border: none !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease;
+    }
+    div.stButton > button:hover {
+        transform: scale(1.03);
+        box-shadow: 0px 0px 15px rgba(232, 165, 152, 0.6) !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Dados dos perfumes com links de imagens (Substitua as URLs pelas suas imagens se quiser)
+# Dados dos perfumes com links de imagens placeholder (substitua pelas suas imagens reais se quiser)
 @st.cache_data
 def carregar_dados():
     perfumes = [
@@ -71,13 +105,13 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# Cabeçalho principal
-st.title("✨ Perfume Finder 2026")
-st.subheader("Encontre a fragrância perfeita para a sua assinatura olfativa")
-st.markdown("---")
+# Cabeçalho principal estilizado
+st.markdown("<h1>✨ PERFUME STUDIO PREMIUM</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #dfd5c6; font-size: 16px;'>Descubra o aroma que traduz o seu luxo e personalidade</p>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Barra lateral para filtros
-st.sidebar.header("🔍 Filtre Suas Preferências")
+st.sidebar.header("👑 Seletor de Luxo")
 
 familias = ["Todas"] + list(df["Familia"].unique())
 familia_selecionada = st.sidebar.selectbox("Família Olfativa", familias)
@@ -96,40 +130,42 @@ if familia_selecionada != "Todas":
 if ocasiao_selecionada != "Todas":
     df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao_selecionada, na=False)]
 
-# Exibição dos cards
-st.write(f"### 🛍️ Fragrâncias Recomendadas ({len(df_filtrado)})")
+# Grid principal
+st.markdown(f"<h3 style='color: #f3e5ab;'>🛍️ Coleção Selecionada ({len(df_filtrado)})</h3>", unsafe_allow_html=True)
 
 if df_filtrado.empty:
-    st.warning("Nenhum perfume encontrado com os filtros selecionados. Tente ajustar suas preferências na barra lateral!")
+    st.warning("Nenhum perfume encontrado com os filtros selecionados. Tente ajustar suas preferências!")
 else:
     cols = st.columns(3)
     
     for index, row in df_filtrado.reset_index().iterrows():
         with cols[index % 3]:
-            # Container estilizado para modo escuro
+            # Container com design elegante de estúdio de fotografia
             st.markdown(
                 f"""
                 <div class="perfume-card">
-                    <h3 style="margin-top:0; color:#fff;">{row['Nome']}</h3>
-                    <p style="color:#a0aec0; margin-bottom:15px;"><strong>Marca:</strong> {row['Marca']}</p>
-                    <p style="margin-bottom:10px;"><span class="tag">{row['Familia']}</span></p>
+                    <h3 style="margin-top:0; color:#f3e5ab; font-family:'Playfair Display', serif;">{row['Nome']}</h3>
+                    <p style="color:#d0c4b4; margin-bottom:15px; font-size: 13px;"><strong>MARCA:</strong> {row['Marca'].upper()}</p>
+                    <p style="margin-bottom:15px;"><span class="tag">{row['Familia'].upper()}</span></p>
                     <p style="color:#e2e8f0; font-size:14px;"><strong>Ocasião:</strong> {row['Ocasiao']}</p>
-                    <p style="color:#cbd5e0; font-size:14px; min-height:40px;"><strong>Notas:</strong> <em>{row['Nota']}</em></p>
-                    <h2 style="color:#48bb78; margin-top:15px; margin-bottom:15px;">R$ {row['Preco']},00</h2>
+                    <p style="color:#cbd5e0; font-size:14px; min-height:45px;"><strong>Notas de topo:</strong> <em>{row['Nota']}</em></p>
+                    <h2 style="color:#d4af37; margin-top:15px; margin-bottom:0px; font-family: 'Playfair Display', serif;">R$ {row['Preco']},00</h2>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
             
-            # Exibe a imagem logo abaixo do card (com largura ajustada à coluna)
+            # Imagem do perfume perfeitamente integrada
             st.image(row['Imagem'], use_container_width=True)
             
-            if st.button(f"Ver Detalhes", key=f"btn_{row['Nome']}"):
-                st.info(f"Você selecionou o {row['Nome']} ({row['Marca']}). Perfeito para {row['Ocasiao']}!")
-            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button(f"Explorar Fragrância", key=f"btn_{row['Nome']}"):
+                st.info(f"Notas exclusivas de {row['Nome']}. Ideal para destacar sua presença em momentos como {row['Ocasiao']}.")
+            st.markdown("<br><br>", unsafe_allow_html=True)
 
-st.markdown("---")
-st.write("### 🧠 Não sabe o que escolher?")
-if st.button("✨ Fazer o Quiz de Assinatura Olfativa"):
-    st.balloons()
-    st.success("Quiz em desenvolvimento! Em breve você poderá descobrir o perfume ideal para o seu perfil.")
+st.markdown("<hr style='border-color: rgba(212, 175, 55, 0.2);'>", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #f3e5ab; text-align: center;'>✨ Deseja uma consultoria sob medida?</h3>", unsafe_allow_html=True)
+c_button = st.columns([1,2,1])
+with c_button[1]:
+    if st.button("Iniciar Quiz da Assinatura Olfativa", use_container_width=True):
+        st.balloons()
+        st.success("Perfeito! Em breve liberaremos o questionário personalizado de alta perfumaria.")
