@@ -49,21 +49,13 @@ if familia_selecionada != "Todas":
     df_filtrado = df_filtrado[df_filtrado["Familia"] == familia_selecionada]
 
 if ocasiao_selecionada != "Todas":
-    df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao_selecionada, na=False)]
-
-# Área de Exibição dos Perfumes Recomendados
-st.write(f"### 🛍️ Fragrâncias Recomendadas ({len(df_filtrado)})")
-
-if df_filtrado.empty:
-    st.warning("Nenhum perfume encontrado com os filtros selecionados. Tente ajustar suas preferências na barra lateral!")
-else:
-    # Criar um grid de colunas para os cards de perfumes
+       # Criar um grid de colunas para os cards de perfumes
     cols = st.columns(3)
     
     for index, row in df_filtrado.iterrows():
         # Distribui os perfumes entre as colunas do grid
         with cols[index % 3]:
-                        st.markdown(
+            st.markdown(
                 f"""
                 <div style="border:1px solid #e6e6e6; border-radius:10px; padding:20px; margin-bottom:20px; background-color:#fafafa;">
                     <h4>{row['Nome']}</h4>
@@ -76,15 +68,7 @@ else:
                 """,
                 unsafe_allow_html=True
             )
-
             
-            # Botão interativo do Streamlit para cada perfume
+            # Botão interativo do Streamlit para cada perfume (Agora alinhado!)
             if st.button(f"Ver Detalhes de {row['Nome']}", key=row['Nome']):
                 st.info(f"Você selecionou {row['Nome']}. Adicione aqui redirecionamentos ou mais detalhes sobre as notas de coração e fundo!")
-
-# Rodapé ou seção de Quiz
-st.markdown("---")
-st.write("### 🧠 Não sabe o que escolher?")
-if st.button("✨ Fazer o Quiz de Assinatura Olfativa"):
-    st.balloons()
-    st.success("Quiz em desenvolvimento! Em breve você responderá a perguntas sobre sua personalidade para encontrar seu perfume ideal.")
