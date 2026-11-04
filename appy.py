@@ -104,7 +104,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Banco de dados completo e higienizado
+# Banco de dados completo e higienizado com os links de imagem enviados por você
 @st.cache_data
 def carregar_dados():
     perfumes = [
@@ -133,7 +133,7 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# Títulos
+# Títulos Principais
 st.markdown("<h1>✨ ESSENCE STUDIO PREMIUM</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #5e514c; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top:0;'>Curadoria Unissex de Alta Perfumaria Nacional e Internacional</p>", unsafe_allow_html=True)
 
@@ -145,5 +145,48 @@ familia_selecionada = st.sidebar.selectbox("Família Olfativa", familias)
 ocasiao_selecionada = st.sidebar.selectbox("Ocasião de Uso", ["Todas", "Dia / Verão", "Versátil", "Noite / Formal", "Noite / Balada", "Casual / Noite", "Trabalho / Noite", "Trabalho / Formal", "Noite / Festas"])
 preco_max = st.sidebar.slider("Preço Máximo (R$)", min_value=150, max_value=1000, value=1000, step=50)
 
-# Processar Filtros
+
+Processar Filtros
+
 df_filtrado = df[df["Preco"] <= preco_max]
+if origem_selecionada != "Todos":
+df_filtrado = df_filtrado[df_filtrado["Origem"] == origem_selecionada]
+if familia_selecionada != "Todas":
+df_filtrado = df_filtrado[df_filtrado["Familia"] == familia_selecionada]
+if ocasiao_selecionada != "Todas":
+df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao_selecionada, na=False)]
+
+Grid de Exibição Principal
+
+st.write(f"### ✨ Fragrâncias Disponíveis ({len(df_filtrado)})")
+if df_filtrado.empty:
+st.warning("Nenhuma fragrância corresponde aos critérios selecionados.")
+else:
+cols = st.columns(3)
+for index, row in df_filtrado.reset_index().iterrows():
+with cols[index % 3]:
+tag_class = "tag tag-nacional" if row['Origem'] == "Nacional" else "tag tag-importado"
+st.markdown(f"""
+
+
+
+
+{row['Nome']}
+CASA: {row['Marca'].upper()}
+
+{row['Origem']}
+{row['Familia']}
+
+Uso: {row['Ocasiao']}
+Acorde: {row['Nota']}
+R$ {row['Preco']},00
+
+""", unsafe_allow_html=True)
+if st.button("Detalhes da Fragrância", key=f"btn_{row['Nome']}", use_container_width=True):
+st.info(f"{row['Nome']} de {row['Marca']} destaca-se por sua excelente evolução olfativa focada em {row['Nota']}.")
+st.markdown("
+", unsafe_allow_html=True)
+st.markdown("", unsafe_allow_html=True)
+if st.button("Iniciar Análise de Assinatura Olfativa Privada", use_container_width=True):
+st.balloons()
+st.success("Mapeamento ativo! Descubra os seus acordes ideais em breve.")
