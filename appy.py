@@ -63,7 +63,7 @@ else:
     for index, row in df_filtrado.iterrows():
         # Distribui os perfumes entre as colunas do grid
         with cols[index % 3]:
-            st.markdown(
+                        st.markdown(
                 f"""
                 <div style="border:1px solid #e6e6e6; border-radius:10px; padding:20px; margin-bottom:20px; background-color:#fafafa;">
                     <h4>{row['Nome']}</h4>
@@ -74,8 +74,9 @@ else:
                     <h3 style="color:#2e7d32;">R$ {row['Preco']},00</h3>
                 </div>
                 """,
-                unsafe_html=True
+                unsafe_allow_html=True
             )
+
             
             # Botão interativo do Streamlit para cada perfume
             if st.button(f"Ver Detalhes de {row['Nome']}", key=row['Nome']):
