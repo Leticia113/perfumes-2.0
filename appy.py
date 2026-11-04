@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização global - Estética Pink, Pastel, Dreamy e Coquete
+# Estilização global - Estética Pink, Pastel, Dreamy e Coquette
 st.markdown("""
     <style>
     /* Importando fontes delicadas e divertidas do Google Fonts */
@@ -27,6 +27,7 @@ st.markdown("""
         text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6);
         text-align: center;
         font-size: 3rem !important;
+        margin-bottom: 5px !important;
     }
     h2, h3, h4, p, span, label {
         font-family: 'Quicksand', sans-serif !important;
@@ -38,31 +39,47 @@ st.markdown("""
     .perfume-card {
         border: 2px solid rgba(255, 255, 255, 0.6);
         border-radius: 20px;
-        padding: 24px;
+        padding: 20px;
         margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.55);
         backdrop-filter: blur(10px);
-        box-shadow: 0 8px 24px rgba(255, 182, 193, 0.4);
+        box-shadow: 0 8px 24px rgba(255, 182, 193, 0.3);
         transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
     }
     .perfume-card:hover {
         transform: translateY(-8px);
-        background: rgba(255, 255, 255, 0.65);
+        background: rgba(255, 255, 255, 0.75);
         border-color: #ff758f;
-        box-shadow: 0 12px 30px rgba(255, 117, 143, 0.5);
+        box-shadow: 0 12px 30px rgba(255, 117, 143, 0.4);
+    }
+    
+    /* Container para a imagem dentro do HTML com proporção bonita */
+    .card-img-container {
+        width: 100%;
+        height: 200px;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    .card-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
     /* Tags de Família Olfativa em formato de pílula rosa chiclete */
     .tag {
         background: #ff758f;
         color: white !important;
-        padding: 6px 14px;
+        padding: 4px 12px;
         border-radius: 25px;
         font-size: 11px;
         font-weight: bold !important;
         letter-spacing: 0.5px;
         display: inline-block;
-        box-shadow: 0 2px 8px rgba(255, 117, 143, 0.3);
+        box-shadow: 0 2px 8px rgba(255, 117, 143, 0.2);
     }
     
     /* Customizando os botões para ficarem super fofos e arredondados */
@@ -85,27 +102,27 @@ st.markdown("""
     
     /* Estilização da sidebar (Menu de Filtros) */
     [data-testid="stSidebar"] {
-        background-color: rgba(255, 240, 245, 0.85) !important;
+        background-color: rgba(255, 240, 245, 0.9) !important;
         border-right: 2px solid rgba(255, 182, 193, 0.4);
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Dados com as imagens reais que você enviou + imagens extras da web que combinam com o tema
+# Dados com as imagens corrigidas e lindas que combinam com o tema rosa/pastel
 @st.cache_data
 def carregar_dados():
     perfumes = [
         {
             "Nome": "Bleu de Chanel", "Marca": "Chanel", "Familia": "Amadeirado", "Ocasiao": "Noite / Formal", "Preco": 890, "Nota": "Citros, Incenso, Cedro",
-            "Imagem": "https://t3.ftcdn.net/jpg/17/58/20/86/360_F_1758208698_rdakp4JJcCQKu0V03bCrLPbUxfPnvlYi.jpg"
+            "Imagem": "https://ftcdn.net"
         },
         {
             "Nome": "Sauvage", "Marca": "Dior", "Familia": "Fougère / Aromático", "Ocasiao": "Versátil", "Preco": 750, "Nota": "Bergamota, Pimenta, Ambroxan",
-            "Imagem": "https://png.pngtree.com/thumb_back/fh260/background/20241126/pngtree-two-perfume-bottles-with-pastel-colored-liquids-set-against-a-dreamy-image_16643309.jpg"
+            "Imagem": "https://pngtree.com"
         },
         {
             "Nome": "La Vie Est Belle", "Marca": "Lancôme", "Familia": "Floral / Doces", "Ocasiao": "Casual / Noite", "Preco": 680, "Nota": "Íris, Jasmim, Baunilha",
-            "Imagem": "https://dreamstime.com"
+            "Imagem": "https://unsplash.com"
         },
         {
             "Nome": "Acqua di Giò", "Marca": "Giorgio Armani", "Familia": "Cítrico / Aquático", "Ocasiao": "Dia / Verão", "Preco": 620, "Nota": "Notas Marinhas, Limão, Alecrim",
@@ -126,11 +143,11 @@ df = carregar_dados()
 
 # Cabeçalho principal
 st.markdown("<h1>🌸 CLUBE DAS GAROTAS PERFUMADAS 🌸</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #6c5862; font-size: 16px; font-weight: bold;'>Encontre o cheirinho perfeito que combina com o seu mood de hoje! ✨</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #6c5862; font-size: 16px; font-weight: bold; margin-top:0;'>Encontre o cheirinho perfeito que combina com o seu mood de hoje! ✨</p>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Barra lateral para filtros
-st.sidebar.markdown("<h2 style='color: #ff4d6d; text-align: center;'>💖 Filtros Fofos</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='color: #ff4d6d; text-align: center; margin-top: 20px;'>💖 Filtros Fofos</h2>", unsafe_allow_html=True)
 
 familias = ["Todas"] + list(df["Familia"].unique())
 familia_selecionada = st.sidebar.selectbox("Escolha a vibe olfativa:", familias)
@@ -159,28 +176,28 @@ else:
     
     for index, row in df_filtrado.reset_index().iterrows():
         with cols[index % 3]:
-            # Imagem do perfume exibida no topo do card com bordas arredondadas e fofas
-            st.image(row['Imagem'], use_container_width=True)
-            
-            # Container do card com informações detalhadas abaixo da foto
+            # Imagem e informações unificadas dentro do mesmo HTML para alinhar tudo
             st.markdown(
                 f"""
                 <div class="perfume-card">
-                    <h3 style="margin-top:0; color:#ff4d6d; font-family:'Fredoka', sans-serif; font-size:20px;">{row['Nome']}</h3>
+                    <div class="card-img-container">
+                        <img src="{row['Imagem']}" alt="{row['Nome']}">
+                    </div>
+                    <h3 style="margin-top:0; color:#ff4d6d; font-family:'Fredoka', sans-serif; font-size:20px; margin-bottom:5px;">{row['Nome']}</h3>
                     <p style="color:#8a737f; margin-bottom:12px; font-size: 13px;"><strong>MARCA:</strong> {row['Marca']}</p>
                     <p style="margin-bottom:12px;"><span class="tag">✨ {row['Familia']}</span></p>
                     <p style="font-size:14px; margin-bottom:6px;"><strong>Ideal para:</strong> {row['Ocasiao']}</p>
-                    <p style="font-size:14px; color:#5c4d55;"><strong>Notas:</strong> <em>{row['Nota']}</em></p>
-                    <h3 style="color:#ff4d6d; margin-top:12px; margin-bottom:0px; font-family: 'Fredoka', sans-serif;">R$ {row['Preco']},00</h3>
+                    <p style="font-size:14px; color:#5c4d55; min-height: 40px;"><strong>Notas:</strong> <em>{row['Nota']}</em></p>
+                    <h3 style="color:#ff4d6d; margin-top:10px; margin-bottom:10px; font-family: 'Fredoka', sans-serif;">R$ {row['Preco']},00</h3>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
             
-            # Botão de interação fofo
+            # Botão de interação fofo posicionado perfeitamente abaixo de cada card
             if st.button(f"Quero esse! 💕", key=f"btn_{row['Nome']}", use_container_width=True):
                 st.balloons()
-                st.success(f"Arrasou! O {row['Nome']} é perfeito para exalar a sua energia icônica em momentos de {row['Ocasiao']}!")
+                st.success(f"Arrasou! O {row['Nome']} é perfeito para exalar a sua energia icônica!")
             st.markdown("<br>", unsafe_allow_html=True)
 
 st.markdown("<hr style='border-color: rgba(255, 117, 143, 0.3);'>", unsafe_allow_html=True)
