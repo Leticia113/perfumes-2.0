@@ -1,14 +1,14 @@
 import streamlit as st
 import pandas as pd
 
-# Configuração premium de página
+# 1. CONFIGURAÇÃO PREMIUM DE PÁGINA
 st.set_page_config(
     page_title="Essence Studio Premium",
     page_icon="✨",
     layout="wide"
 )
 
-# Estilização Global Avançada - Unissex, Minimalista e Luxuosa
+# 2. ESTILIZAÇÃO GLOBAL AVANÇADA (CSS CUSTOMIZADO)
 st.markdown("""
     <style>
     /* Fundo Degradê sutil Champagne Rose Acetinado */
@@ -104,11 +104,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Banco de dados completo e higienizado com os links de imagem enviados por você
+# 3. BANCO DE DADOS COMPLETO COM SUA CURADORIA DE PRODUTOS
 @st.cache_data
 def carregar_dados():
     perfumes = [
-        # IMPORTADOS
+        # --- IMPORTADOS ---
         {"Nome": "La Vie Est Belle", "Marca": "Lancôme", "Familia": "Floral / Doces", "Ocasiao": "Casual / Noite", "Preco": 680, "Nota": "Íris, Jasmim, Baunilha", "Origem": "Importado", "Imagem": "https://gstatic.com"},
         {"Nome": "Bleu de Chanel", "Marca": "Chanel", "Familia": "Amadeirado", "Ocasiao": "Noite / Formal", "Preco": 890, "Nota": "Citros, Incenso, Cedro", "Origem": "Importado", "Imagem": "https://gstatic.com"},
         {"Nome": "Sauvage", "Marca": "Dior", "Familia": "Fougère / Aromático", "Ocasiao": "Versátil", "Preco": 750, "Nota": "Bergamota, Pimenta, Ambroxan", "Origem": "Importado", "Imagem": "https://gstatic.com"},
@@ -119,7 +119,7 @@ def carregar_dados():
         {"Nome": "Le Male", "Marca": "Jean Paul Gaultier", "Familia": "Oriental Fougère", "Ocasiao": "Casual / Noite", "Preco": 690, "Nota": "Menta, Lavanda, Baunilha", "Origem": "Importado", "Imagem": "https://jeanpaulgaultier.com"},
         {"Nome": "Acqua di Giò", "Marca": "Giorgio Armani", "Familia": "Cítrico / Aquático", "Ocasiao": "Dia / Verão", "Preco": 620, "Nota": "Notas Marinhas, Limão, Alecrim", "Origem": "Importado", "Imagem": "https://gstatic.com"},
         {"Nome": "Light Blue", "Marca": "Dolce & Gabbana", "Familia": "Cítrico / Floral", "Ocasiao": "Dia / Verão", "Preco": 550, "Nota": "Maçã Verde, Bambu, Limão Siciliano", "Origem": "Importado", "Imagem": "https://gstatic.com"},
-        # NACIONAIS
+        # --- NACIONAIS ---
         {"Nome": "Natura Essencial Feminino", "Marca": "Natura", "Familia": "Floral Clássico", "Ocasiao": "Casual / Elegante", "Preco": 175, "Nota": "Jasmim, Violeta, Complexo Cítrico", "Origem": "Nacional", "Imagem": "https://gstatic.com"},
         {"Nome": "Natura Essencial Masculino", "Marca": "Natura", "Familia": "Amadeirado Elegante", "Ocasiao": "Trabalho / Formal", "Preco": 175, "Nota": "Cedro, Âmbar, Notas Especiadas", "Origem": "Nacional", "Imagem": "https://gstatic.com"},
         {"Nome": "Malbec", "Marca": "O Boticário", "Familia": "Amadeirado Vínico", "Ocasiao": "Trabalho / Noite", "Preco": 219, "Nota": "Carvalho, Álcool Vínico, Patchouli", "Origem": "Nacional", "Imagem": "https://gstatic.com"},
@@ -133,20 +133,19 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# Títulos Principais
+# 4. ELEMENTOS DO CABEÇALHO PRINCIPAL
 st.markdown("<h1>✨ ESSENCE STUDIO PREMIUM</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #5e514c; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top:0;'>Curadoria Unissex de Alta Perfumaria Nacional e Internacional</p>", unsafe_allow_html=True)
 
-# Filtros na Barra Lateral
+# 5. FILTROS NA BARRA LATERAL (SIDEBAR)
 st.sidebar.markdown("<h3 style='color: #2c2523; font-weight: 700; margin-top: 20px;'>🔍 Filtrar Catálogo</h3>", unsafe_allow_html=True)
 origem_selecionada = st.sidebar.radio("Procedência:", ["Todos", "Nacional", "Importado"])
+
 familias = ["Todas"] + list(df["Familia"].unique())
 familia_selecionada = st.sidebar.selectbox("Família Olfativa", familias)
+
 ocasiao_selecionada = st.sidebar.selectbox("Ocasião de Uso", ["Todas", "Dia / Verão", "Versátil", "Noite / Formal", "Noite / Balada", "Casual / Noite", "Trabalho / Noite", "Trabalho / Formal", "Noite / Festas"])
 preco_max = st.sidebar.slider("Preço Máximo (R$)", min_value=150, max_value=1000, value=1000, step=50)
-
-
-Processar Filtros
 
 df_filtrado = df[df["Preco"] <= preco_max]
 if origem_selecionada != "Todos":
@@ -155,9 +154,6 @@ if familia_selecionada != "Todas":
 df_filtrado = df_filtrado[df_filtrado["Familia"] == familia_selecionada]
 if ocasiao_selecionada != "Todas":
 df_filtrado = df_filtrado[df_filtrado["Ocasiao"].str.contains(ocasiao_selecionada, na=False)]
-
-Grid de Exibição Principal
-
 st.write(f"### ✨ Fragrâncias Disponíveis ({len(df_filtrado)})")
 if df_filtrado.empty:
 st.warning("Nenhuma fragrância corresponde aos critérios selecionados.")
@@ -165,7 +161,9 @@ else:
 cols = st.columns(3)
 for index, row in df_filtrado.reset_index().iterrows():
 with cols[index % 3]:
+# Define a cor da tag dependendo da nacionalidade do perfume
 tag_class = "tag tag-nacional" if row['Origem'] == "Nacional" else "tag tag-importado"
+# Montagem estruturada do Card em HTML
 st.markdown(f"""
 
 
@@ -182,6 +180,7 @@ Acorde: {row['Nota']}
 R$ {row['Preco']},00
 
 """, unsafe_allow_html=True)
+# Botão interativo do Streamlit logo abaixo do card HTML
 if st.button("Detalhes da Fragrância", key=f"btn_{row['Nome']}", use_container_width=True):
 st.info(f"{row['Nome']} de {row['Marca']} destaca-se por sua excelente evolução olfativa focada em {row['Nota']}.")
 st.markdown("
